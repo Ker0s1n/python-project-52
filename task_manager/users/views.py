@@ -3,6 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
+from task_manager.mixins import CustomLoginRequiredMixin, UserPermissionMixin
 from task_manager.users.forms import (
     CustomUserCreationForm,
     CustomUserUpdateForm,
@@ -25,7 +26,14 @@ class UserCreateView(SuccessMessageMixin, CreateView):
     extra_context = {"title": "Sign Up", "button_name": "Register"}
 
 
-class UserDeleteView(SuccessMessageMixin, DeleteView):
+class UserDeleteView(
+    CustomLoginRequiredMixin,
+    UserPermissionMixin,
+    SuccessMessageMixin,
+    DeleteView,
+):
+    permission_denied_url = reverse_lazy("users_list")
+    permission_denied_message = "You don't have rights to delete another user."
     template_name = "users/user_delete.html"
     model = get_user_model()
     success_url = reverse_lazy("users_list")
@@ -33,7 +41,14 @@ class UserDeleteView(SuccessMessageMixin, DeleteView):
     extra_context = {"button_name": "Yes, delete"}
 
 
-class UserUpdateView(SuccessMessageMixin, UpdateView):
+class UserUpdateView(
+    CustomLoginRequiredMixin,
+    UserPermissionMixin,
+    SuccessMessageMixin,
+    UpdateView,
+):
+    permission_denied_url = reverse_lazy("users_list")
+    permission_denied_message = "You don't have rights to change another user."
     form_class = CustomUserUpdateForm
     model = get_user_model()
     template_name = "form.html"
