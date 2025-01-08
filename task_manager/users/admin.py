@@ -19,6 +19,7 @@ class CustomUserAdmin(UserAdmin):
     ]
     search_fields = [
         "username",
-        "email" "last_name",
+        "email",
+        "last_name",
         "first_name",
     ]

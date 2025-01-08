@@ -1,8 +1,12 @@
+import os
+
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
+from yaml import CLoader, load
 
 User = get_user_model()
+path = os.path.join("task_manager", "fixtures", "users.yaml")
 
 
 class UserTestCase(TestCase):
@@ -13,24 +17,11 @@ class UserTestCase(TestCase):
         self.user1 = User.objects.get(id=1)
         self.user2 = User.objects.get(id=2)
         self.user_count = User.objects.count()
-        self.valid_user_data = {
-            "first_name": "Rodion",
-            "last_name": "Raskolnikov",
-            "username": "Tvar",
-            "email": "topor@dostoevskiy.ru",
-            "password1": "Have_permission",
-            "password2": "Have_permission",
-        }
-        self.login_user_data = {
-            "username": "Guest",
-            "password": "Eva_from_future",
-        }
-        self.update_user_data = {
-            "first_name": "Eva",
-            "last_name": "Polna",
-            "username": "Golden_grammofon",
-            "email": "evapolna@rukivverx.ru",
-        }
+        with open(path) as f:
+            self.data = load(f, Loader=CLoader)
+        self.valid_user_data = self.data.get("new_user")
+        self.login_user_data = self.data.get("login_user")
+        self.update_user_data = self.data.get("update_user")
 
 
 class UserViewsTest(UserTestCase):

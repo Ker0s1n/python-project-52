@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from task_manager.mixins import CustomLoginRequiredMixin, UserPermissionMixin
@@ -17,6 +18,7 @@ class UserListView(ListView):
     template_name = "users/users_list.html"
     context_object_name = "users"
     ordering = ["id"]
+    extra_context = {"title": _("Users")}
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):
@@ -24,8 +26,8 @@ class UserCreateView(SuccessMessageMixin, CreateView):
     template_name = "form.html"
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("login")
-    success_message = "User was registered successfully"
-    extra_context = {"title": "Sign Up", "button_name": "Register"}
+    success_message = _("User was registered successfully")
+    extra_context = {"title": _("Registration"), "button_name": _("Register")}
 
 
 class UserUpdateView(
@@ -35,15 +37,17 @@ class UserUpdateView(
     UpdateView,
 ):
     permission_denied_url = reverse_lazy("users_list")
-    permission_denied_message = "You don't have rights to change another user."
+    permission_denied_message = _(
+        "You don't have rights to change another user"
+    )
     form_class = CustomUserUpdateForm
     model = User
     template_name = "form.html"
     success_url = reverse_lazy("users_list")
-    success_message = "User was updated successfully"
+    success_message = _("User was updated successfully")
     extra_context = {
-        "button_name": "Update",
-        "title": "Update User",
+        "button_name": _("Update"),
+        "title": _("Update user"),
     }
 
 
@@ -54,9 +58,11 @@ class UserDeleteView(
     DeleteView,
 ):
     permission_denied_url = reverse_lazy("users_list")
-    permission_denied_message = "You don't have rights to delete another user."
+    permission_denied_message = _(
+        "You don't have rights to delete another user"
+    )
     template_name = "users/user_delete.html"
     model = User
     success_url = reverse_lazy("users_list")
-    success_message = "User was deleted successfully"
-    extra_context = {"button_name": "Yes, delete"}
+    success_message = _("User was deleted successfully")
+    extra_context = {"title": _("Delete user"), "button_name": _("Yes, delete")}

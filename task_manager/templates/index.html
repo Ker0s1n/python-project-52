@@ -4,8 +4,8 @@
 
 {% block bootstrap5_content %}
 <div class="bg-light p-5 rounded">
-    <h1>{% translate 'Task Manager' %}</h1>
-    <p class="lead">{% translate 'Manage your tasks with this simple Django-based web application.' %}</p>
-    <a class="btn btn-lg btn-primary" href="{% url 'user_create' %}" role="button">{% translate 'Try now' %}</a>
+    <h1>{% trans 'Task manager' %}</h1>
+    <p class="lead">{% trans 'Manage your tasks with this simple Django-based web application.' %}</p>
+    <a class="btn btn-lg btn-primary" href="{% url 'user_create' %}" role="button">{% trans 'Try now' %}</a>
   </div>
 {% endblock %}

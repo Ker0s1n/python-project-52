@@ -1,42 +1,29 @@
-{% extends 'bootstrap.html' %}
+<!DOCTYPE html>
 {% load django_bootstrap5 %}
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% bootstrap_setting "color_mode" as COLOR_MODE %}
+{% bootstrap_setting "javascript_in_head" as BOOTSTRAP_JAVASCRIPT_IN_HEAD %}
+<html lang="{{ LANGUAGE_CODE|default:'en_us' }}" {% if COLOR_MODE %} data-bs-theme="{{ COLOR_MODE }}" {% endif %}>
 
-{% block bootstrap5_title %}
-{% translate 'Task Manager' %}
-{% endblock %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block bootstrap5_title %}{% trans 'Task manager' %}{% endblock %}</title>
+    {% bootstrap_css %}
+    {% if BOOTSTRAP_JAVASCRIPT_IN_HEAD %}{% bootstrap_javascript %}{% endif %}
+    {% block bootstrap5_extra_head %}{% endblock %}
+</head>
 
-{% block bootstrap5_before_content %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'index' %}">{% translate 'Task Manager' %}</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'users_list' %}">Users</a>
-                </li>
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <form class="me-auto mb-2 mb-md-0" action="{% url 'logout' %}" method="post">
-                        {% csrf_token %}
-                        <input class="btn nav-link" type="submit" value="{% translate 'Log Out' %}">
-                    </form>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{% url 'login' %}">Log in</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user_create' %}">Register</a>
-                </li>
-                {% endif %}
-            </ul>
-            </form>
-        </div>
-    </div>
-</nav>
-{% endblock %}
+<body class="d-flex flex-column min-vh-100">
+    <header>{% include 'header.html' %}</header>
+    <main class="container wrapper flex-grow-1">
+        {% bootstrap_messages %}
+        {% block bootstrap5_content %}{% endblock %}
+        {% block bootstrap5_after_content %}{% endblock %}
+    </main>
+    {% if not BOOTSTRAP_JAVASCRIPT_IN_HEAD %}{% bootstrap_javascript %}{% endif %}
+    {% block bootstrap5_extra_script %}{% endblock %}
+</body>
+
+</html>

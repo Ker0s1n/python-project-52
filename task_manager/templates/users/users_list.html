@@ -3,19 +3,19 @@
 {% load i18n %}
 
 {% block bootstrap5_title %}
-{% translate 'Users' %}
+{{ title }}
 {% endblock %}
 
 {% block bootstrap5_content %}
 <div>
-    <h1>{% translate 'Users' %}</h1>
+    <h1>{{ title }}</h1>
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">{% translate 'Username' %}</th>
-                <th scope="col">{% translate 'Full Name' %}</th>
-                <th scope="col">{% translate 'Creation Date' %}</th>
+                <th scope="col">{% trans 'Username' %}</th>
+                <th scope="col">{% trans 'Full name' %}</th>
+                <th scope="col">{% trans 'Creation date' %}</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -27,9 +27,9 @@
                 <td>{{ user.first_name }} {{ user.last_name }}</td>
                 <td>{{ user.date_joined|date:"d.m.Y H:i" }}</td>
                 <td>
-                    <a href="{% url 'user_update' user.id %}">{% translate 'Edit' %}</a>
+                    <a href="{% url 'user_update' user.id %}">{% trans 'Edit' %}</a>
                     <br>
-                    <a href="{% url 'user_delete' user.id %}">{% translate 'Delete' %}</a>
+                    <a href="{% url 'user_delete' user.id %}">{% trans 'Delete' %}</a>
                 </td>
             </tr>
             {% endfor %}
