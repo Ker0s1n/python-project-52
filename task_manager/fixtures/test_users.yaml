@@ -14,3 +14,11 @@
     username: Guest
     email: evapolna@rukivverx.ru
     password: Eva_from_future
+- model: auth.user
+  pk: 3
+  fields:
+    first_name: Ruslan
+    last_name: Safiullin
+    username: Primy Proekt
+    email: ruslan@neprinimaushiy.ru
+    password: ti ne proidesh

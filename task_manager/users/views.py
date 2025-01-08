@@ -9,36 +9,23 @@ from task_manager.users.forms import (
     CustomUserUpdateForm,
 )
 
+User = get_user_model()
+
 
 class UserListView(ListView):
-    model = get_user_model()
+    model = User
     template_name = "users/users_list.html"
     context_object_name = "users"
     ordering = ["id"]
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):
-    model = get_user_model()
+    model = User
     template_name = "form.html"
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("login")
     success_message = "User was registered successfully"
     extra_context = {"title": "Sign Up", "button_name": "Register"}
-
-
-class UserDeleteView(
-    CustomLoginRequiredMixin,
-    UserPermissionMixin,
-    SuccessMessageMixin,
-    DeleteView,
-):
-    permission_denied_url = reverse_lazy("users_list")
-    permission_denied_message = "You don't have rights to delete another user."
-    template_name = "users/user_delete.html"
-    model = get_user_model()
-    success_url = reverse_lazy("users_list")
-    success_message = "User was deleted successfully"
-    extra_context = {"button_name": "Yes, delete"}
 
 
 class UserUpdateView(
@@ -50,7 +37,7 @@ class UserUpdateView(
     permission_denied_url = reverse_lazy("users_list")
     permission_denied_message = "You don't have rights to change another user."
     form_class = CustomUserUpdateForm
-    model = get_user_model()
+    model = User
     template_name = "form.html"
     success_url = reverse_lazy("users_list")
     success_message = "User was updated successfully"
@@ -58,3 +45,18 @@ class UserUpdateView(
         "button_name": "Update",
         "title": "Update User",
     }
+
+
+class UserDeleteView(
+    CustomLoginRequiredMixin,
+    UserPermissionMixin,
+    SuccessMessageMixin,
+    DeleteView,
+):
+    permission_denied_url = reverse_lazy("users_list")
+    permission_denied_message = "You don't have rights to delete another user."
+    template_name = "users/user_delete.html"
+    model = User
+    success_url = reverse_lazy("users_list")
+    success_message = "User was deleted successfully"
+    extra_context = {"button_name": "Yes, delete"}

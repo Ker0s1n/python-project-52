@@ -21,4 +21,9 @@ class CustomUserUpdateForm(UserChangeForm):
 
     class Meta(UserChangeForm.Meta):
         model = get_user_model()
-        fields = ("first_name", "last_name", "username")
+        fields = (
+            "first_name",
+            "last_name",
+            "username",
+            "email",
+        )
