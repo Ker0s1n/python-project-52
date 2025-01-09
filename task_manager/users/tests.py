@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
@@ -6,7 +6,7 @@ from django.urls import reverse
 from yaml import CLoader, load
 
 User = get_user_model()
-path = os.path.join("task_manager", "fixtures", "users.yaml")
+path = Path(__file__).resolve().parent.parent.joinpath("fixtures", "users.yaml")
 
 
 class UserTestCase(TestCase):
@@ -17,7 +17,7 @@ class UserTestCase(TestCase):
         self.user1 = User.objects.get(id=1)
         self.user2 = User.objects.get(id=2)
         self.user_count = User.objects.count()
-        with open(path) as f:
+        with path.open() as f:
             self.data = load(f, Loader=CLoader)
         self.valid_user_data = self.data.get("new_user")
         self.login_user_data = self.data.get("login_user")
