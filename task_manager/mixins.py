@@ -1,13 +1,15 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models.deletion import ProtectedError
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 
 
 class CustomLoginRequiredMixin(LoginRequiredMixin):
     login_url = reverse_lazy("login")
     redirect_field_name = None
-    access_denied_message = "You are not authorized! Please, log in."
+    access_denied_message = _("You are not authorized! Please, log in.")
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -20,7 +22,7 @@ class CustomLoginRequiredMixin(LoginRequiredMixin):
 
 class UserPermissionMixin(UserPassesTestMixin):
     permission_denied_url = None
-    permission_denied_message = "Permission denied"
+    permission_denied_message = _("Permission denied")
 
     def test_func(self):
         return self.get_object() == self.request.user
@@ -33,3 +35,17 @@ class UserPermissionMixin(UserPassesTestMixin):
             )
             return redirect(self.permission_denied_url)
         return super().dispatch(request, *args, **kwargs)
+
+
+class ProtectErrorMixin:
+    protected_object_url = None
+    protected_object_message = _(
+        "Cannot delete object because it is being used"
+    )
+
+    def post(self, request, *args, **kwargs):
+        try:
+            return super().post(request, *args, **kwargs)
+        except ProtectedError:
+            messages.error(request, self.protected_object_message)
+            return redirect(self.protected_object_url)
