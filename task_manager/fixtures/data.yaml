@@ -13,3 +13,7 @@ update_user:
   last_name: Polna
   username: Golden_grammofon
   email: evapolna@rukivverx.ru
+new_status:
+  status: Don`t do it
+update_status:
+  status: Forget

@@ -6,11 +6,11 @@ from django.urls import reverse
 from yaml import CLoader, load
 
 User = get_user_model()
-path = Path(__file__).resolve().parent.parent.joinpath("fixtures", "users.yaml")
+path = Path(__file__).resolve().parent.parent.joinpath("fixtures", "data.yaml")
 
 
 class UserTestCase(TestCase):
-    fixtures = ["test_users.yaml"]
+    fixtures = ["bd_data.yaml"]
 
     def setUp(self):
         self.client = Client()

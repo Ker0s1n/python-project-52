@@ -16,7 +16,9 @@ class StatusListView(CustomLoginRequiredMixin, ListView):
     extra_context = {"title": _("Statuses"), "create": _("Create status")}
 
 
-class StatusCreateView(SuccessMessageMixin, CreateView):
+class StatusCreateView(
+    CustomLoginRequiredMixin, SuccessMessageMixin, CreateView
+):
     model = Status
     template_name = "form.html"
     form_class = StatusCreationForm
