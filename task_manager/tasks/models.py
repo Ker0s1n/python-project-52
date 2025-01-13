@@ -21,7 +21,7 @@ class Task(models.Model):
     status = models.ForeignKey(
         Status, on_delete=models.PROTECT, verbose_name=_("Status")
     )
-    perfomer = models.ForeignKey(
+    performer = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
         verbose_name=_("Perfomer"),
