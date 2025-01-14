@@ -9,7 +9,7 @@ from django.views.generic import (
     UpdateView,
 )
 
-from task_manager.mixins import CustomLoginRequiredMixin
+from task_manager.mixins import AuthorPermissionMixin, CustomLoginRequiredMixin
 from task_manager.tasks.forms import TaskCreationForm
 from task_manager.tasks.models import Task
 
@@ -31,7 +31,7 @@ class TaskInfoView(CustomLoginRequiredMixin, DetailView):
         "author": _("Author"),
         "performer": _("Performer"),
         "status": _("Status"),
-        "createdate": _("Creation Date"),
+        "createdate": _("Creation date"),
         "update": _("Last update"),
     }
 
@@ -60,6 +60,7 @@ class TaskUpdateView(CustomLoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
 class TaskDeleteView(
     CustomLoginRequiredMixin,
+    AuthorPermissionMixin,
     SuccessMessageMixin,
     DeleteView,
 ):

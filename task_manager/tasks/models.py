@@ -24,8 +24,8 @@ class Task(models.Model):
     performer = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
-        verbose_name=_("Perfomer"),
-        related_name=_("Perfomer"),
+        verbose_name=_("Performer"),
+        related_name=_("Performer"),
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
