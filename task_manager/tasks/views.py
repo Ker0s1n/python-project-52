@@ -5,23 +5,26 @@ from django.views.generic import (
     CreateView,
     DeleteView,
     DetailView,
-    ListView,
     UpdateView,
 )
+from django_filters.views import FilterView
 
 from task_manager.mixins import AuthorPermissionMixin, CustomLoginRequiredMixin
+from task_manager.tasks.filter import TaskFilter
 from task_manager.tasks.forms import TaskCreationForm
 from task_manager.tasks.models import Task
 
 
-class TaskListView(CustomLoginRequiredMixin, ListView):
+class TaskListView(CustomLoginRequiredMixin, FilterView):
     model = Task
+    filterset_class = TaskFilter
     template_name = "tasks/tasks_list.html"
     context_object_name = "tasks"
     ordering = ["id"]
     extra_context = {
         "title": _("Tasks"),
         "create": _("Create task"),
+        "find": _("Filter"),
         "edit": _("Edit"),
         "delete": _("Delete"),
     }

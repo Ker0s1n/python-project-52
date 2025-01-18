@@ -5,6 +5,8 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from yaml import CLoader, load
 
+from task_manager.labels.models import Label
+from task_manager.statuses.models import Status
 from task_manager.tasks.models import Task
 
 User = get_user_model()
@@ -19,6 +21,9 @@ class TaskTestCase(TestCase):
         self.user = User.objects.get(id=3)
         self.task1 = Task.objects.get(id=1)
         self.task2 = Task.objects.get(id=2)
+        self.status = Status.objects.get(id=3)
+        self.performer = User.objects.get(id=1)
+        self.label = Label.objects.get(id=2)
         self.task_count = Task.objects.count()
         with path.open() as f:
             self.data = load(f, Loader=CLoader)
@@ -39,6 +44,39 @@ class TaskViewsTest(TaskTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "tasks/tasks_list.html")
         self.assertEqual(Task.objects.count(), self.task_count)
+
+    def test_tasks_filter(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(
+            reverse("tasks_list"), {"status": self.status.id}
+        )
+        self.assertEqual(response.status_code, 200)
+        tasks = set(response.context["tasks"])
+        expected_tasks = set(Task.objects.filter(status=self.status))
+        self.assertEqual(tasks, expected_tasks)
+
+        response = self.client.get(
+            reverse("tasks_list"), {"performer": self.performer.id}
+        )
+        self.assertEqual(response.status_code, 200)
+        tasks = set(response.context["tasks"])
+        expected_tasks = set(Task.objects.filter(performer=self.performer))
+        self.assertEqual(tasks, expected_tasks)
+
+        response = self.client.get(reverse("tasks_list"), {"user_tasks": True})
+        self.assertEqual(response.status_code, 200)
+        tasks = set(response.context["tasks"])
+        expected_tasks = set(Task.objects.filter(author=self.user))
+        self.assertEqual(tasks, expected_tasks)
+
+        response = self.client.get(
+            reverse("tasks_list"), {"labels": self.label.id}
+        )
+        self.assertEqual(response.status_code, 200)
+        tasks = set(response.context["tasks"])
+        expected_tasks = set(Task.objects.filter(labels=self.label))
+        self.assertEqual(tasks, expected_tasks)
 
     def test_task_info(self):
         id = self.task1.id
