@@ -79,7 +79,7 @@ class StatusViewsTest(StatusTestCase):
         self.assertRedirects(response, reverse("login"))
 
         response = self.client.post(
-            reverse("user_update", args=[id]), self.update_status_data
+            reverse("status_update", args=[id]), self.update_status_data
         )
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse("login"))

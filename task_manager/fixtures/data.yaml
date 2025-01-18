@@ -17,3 +17,13 @@ new_status:
   status: Don`t do it
 update_status:
   status: Forget
+new_task:
+  name: Created task
+  body: This task was created on tests
+  status: 3
+  performer: 3
+update_task:
+  name: Updated task
+  body: This task was UPDATED on tests
+  status: 2
+  performer: 2
