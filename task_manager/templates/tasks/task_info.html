@@ -26,9 +26,16 @@
             <dt class="col-sm-3">{{ update }}</dt>
             <dd class="col-sm-9">{{ task.updated_at|date:"d.m.Y H:i" }}</dd>
         </dl>
-        <a href="{% url 'task_update' task.id %}">{% trans 'Edit' %}</a>
+        </dl>
+        <p class="fw-bold">{{ labels }}:</p>
+        <ul>
+            {% for label in task.labels.all %}
+            <li>{{ label }}</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'task_update' task.id %}">{{ edit }}</a>
         <br>
-        <a href="{% url 'task_delete' task.id %}">{% trans 'Delete' %}</a>
+        <a href="{% url 'task_delete' task.id %}">{{ delete }}</a>
     </div>
 </div>
 {% endblock %}

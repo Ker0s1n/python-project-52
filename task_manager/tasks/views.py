@@ -19,7 +19,12 @@ class TaskListView(CustomLoginRequiredMixin, ListView):
     template_name = "tasks/tasks_list.html"
     context_object_name = "tasks"
     ordering = ["id"]
-    extra_context = {"title": _("Tasks"), "create": _("Create task")}
+    extra_context = {
+        "title": _("Tasks"),
+        "create": _("Create task"),
+        "edit": _("Edit"),
+        "delete": _("Delete"),
+    }
 
 
 class TaskInfoView(CustomLoginRequiredMixin, DetailView):
@@ -33,6 +38,9 @@ class TaskInfoView(CustomLoginRequiredMixin, DetailView):
         "status": _("Status"),
         "createdate": _("Creation date"),
         "update": _("Last update"),
+        "labels": _("Labels"),
+        "edit": _("Edit"),
+        "delete": _("Delete"),
     }
 
 

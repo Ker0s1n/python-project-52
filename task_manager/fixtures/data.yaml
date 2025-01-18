@@ -27,3 +27,7 @@ update_task:
   body: This task was UPDATED on tests
   status: 2
   performer: 2
+new_label:
+  label: Created label
+update_label:
+  label: Updated label
