@@ -15,6 +15,7 @@ dependencies = [
     "whitenoise[brotli]>=6.8.2",
     "pyyaml>=6.0.2",
     "django-filter>=24.3",
+    "rollbar>=1.1.1",
 ]
 
 [dependency-groups]
