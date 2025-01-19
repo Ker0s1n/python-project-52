@@ -1,10 +1,12 @@
 install:
 	uv sync --all-packages
+dev:
+	uv run python manage.py runserver
 build:
-	uvx --from build pyproject-build --installer uv
+	./build.sh
 test:
-	uv python manage.py test
+	uv run python manage.py test
 lint:
-	uv python ruff check
+	uv run python ruff check
 lint-fix:
 	uv python ruff check --fix
