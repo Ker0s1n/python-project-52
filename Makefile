@@ -11,4 +11,4 @@ lint:
 lint-fix:
 	uv ruff check --fix
 start:
-	gunicorn task_manager.asgi:application -k uvicorn.workers.UvicornWorker
+	uv run gunicorn task_manager.asgi:application -k uvicorn.workers.UvicornWorker
