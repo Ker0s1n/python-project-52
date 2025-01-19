@@ -7,8 +7,8 @@ build:
 test:
 	uv run python manage.py test
 lint:
-	uv run python ruff check
+	uv run ruff check
 lint-fix:
-	uv python ruff check --fix
+	uv ruff check --fix
 start:
 	uv run gunicorn task_manager.asgi:application -k uvicorn.workers.UvicornWorker
